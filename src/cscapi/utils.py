@@ -26,7 +26,7 @@ def generate_machine_id_from_key(key, prefix: str = "", length=48) -> str:
 
 
 def create_signal(
-    ip: str, scenario: str, created_at: str, machine_id: str, **kwargs
+    attacker_ip: str, scenario: str, created_at: str, machine_id: str, **kwargs
 ) -> SignalModel:
     created_at = (
         datetimeparser.parse(created_at)

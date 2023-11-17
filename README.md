@@ -9,10 +9,10 @@ client = CAPIClient(SQLStorage())
 
 signals = [
     create_signal(
-        ip="1.2.3.4",
+        attacker_ip="<attacker_ip>",
         scenario="crowdsecurity/ssh-bf",
         created_at="2023-11-17",
-        machine_id=generate_machine_id_from_key("1.2.3.4"),
+        machine_id=generate_machine_id_from_key("<key>"),
     )
 ]
 
