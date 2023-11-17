@@ -11,7 +11,7 @@ from more_itertools import batched
 
 from cscapi.storage import MachineModel, ReceivedDecision, SignalModel, StorageInterface
 
-logging.getLogger('capi-py-sdk').addHandler(logging.NullHandler())
+logging.getLogger("capi-py-sdk").addHandler(logging.NullHandler())
 
 CAPI_BASE_URL = "https://api.crowdsec.net/v3"
 CAPI_WATCHER_REGISTER_URL = f"{CAPI_BASE_URL}/watchers"
@@ -123,7 +123,9 @@ class CAPIClient:
         try:
             resp.raise_for_status()
         except httpx.HTTPStatusError as exc:
-            logging.error(f"Error while refreshing token: machine_id might be already registered or password is wrong")
+            logging.error(
+                f"Error while refreshing token: machine_id might be already registered or password is wrong"
+            )
             raise exc
 
         new_machine = asdict(machine)
@@ -205,6 +207,7 @@ class CAPIClient:
                     "tags": tags,
                 },
             )
+
 
 try:
     from importlib import metadata
