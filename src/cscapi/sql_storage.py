@@ -1,4 +1,4 @@
-from dataclasses import asdict, replace
+from dataclasses import asdict
 from typing import List
 
 from dacite import from_dict
@@ -9,10 +9,8 @@ from sqlalchemy import (
     ForeignKey,
     Integer,
     String,
-    Time,
     create_engine,
     delete,
-    select,
     update,
 )
 from sqlalchemy.orm import (
@@ -122,7 +120,7 @@ class SignalDBModel(Base):
 
 
 class SQLStorage(storage.StorageInterface):
-    def __init__(self, connection_string="sqlite:///your_database.db") -> None:
+    def __init__(self, connection_string="sqlite:///cscapi.db") -> None:
         engine = create_engine(connection_string, echo=False)
         Base.metadata.create_all(engine)
         Session = sessionmaker(bind=engine)

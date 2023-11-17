@@ -1,4 +1,3 @@
-import json
 import secrets
 import time
 from collections import defaultdict
@@ -8,7 +7,6 @@ from typing import Dict, List
 
 import httpx
 import jwt
-
 from more_itertools import batched
 
 from cscapi.storage import MachineModel, ReceivedDecision, SignalModel, StorageInterface
