@@ -4,12 +4,16 @@ from collections import defaultdict
 from dataclasses import asdict
 import logging
 from typing import Dict, List
+from importlib import metadata
 
 import httpx
 import jwt
 from more_itertools import batched
 
 from cscapi.storage import MachineModel, ReceivedDecision, SignalModel, StorageInterface
+
+
+__version__ = metadata.version("cscapi").split("+")[0]
 
 logging.getLogger("capi-py-sdk").addHandler(logging.NullHandler())
 
@@ -207,11 +211,3 @@ class CAPIClient:
                     "tags": tags,
                 },
             )
-
-
-try:
-    from importlib import metadata
-except ImportError:  # for Python<3.8
-    import importlib_metadata as metadata
-
-__version__ = metadata.version("cscapi").split("+")[0]
