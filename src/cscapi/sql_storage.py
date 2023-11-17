@@ -204,12 +204,6 @@ class SQLStorage(storage.StorageInterface):
         for c in to_insert.__table__.columns:
             setattr(exisiting, c.name, getattr(to_insert, c.name))
         self.session.commit()
-
-        # update_stmt = update(SignalDBModel).where(
-        #     SignalDBModel.alert_id == signal.alert_id
-        # ).values(to_insert)
-        # self.session.execute(update_stmt)
-        # self.session.commit()
         return False
 
     def delete_signals(self, signals: List[storage.SignalModel]):
