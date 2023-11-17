@@ -1,10 +1,18 @@
 import os
-from unittest import TestCase
-from cscapi.sql_storage import SQLStorage, MachineDBModel
-from cscapi.storage import MachineModel
-
-
 import time
+from unittest import TestCase
+
+from cscapi.sql_storage import (
+    ContextDBModel,
+    DecisionDBModel,
+    MachineDBModel,
+    SignalDBModel,
+    SourceDBModel,
+    SQLStorage,
+)
+from cscapi.storage import MachineModel, SourceModel
+
+from .test_client import mock_signals
 
 
 class TestSQLStorage(TestCase):
@@ -66,3 +74,44 @@ class TestSQLStorage(TestCase):
         self.assertEqual(retrieved.token, m2.token)
         self.assertEqual(retrieved.password, m2.password)
         self.assertEqual(retrieved.scenarios, m2.scenarios)
+
+    def test_create_signal(self):
+        assert self.storage.get_all_signals() == []
+        self.storage.update_or_create_signal(mock_signals()[0])
+        signals = self.storage.get_all_signals()
+        assert len(signals) == 1
+        signal = signals[0]
+
+        assert signal.alert_id is not None
+        assert signal.sent == False
+
+        assert self.storage.session.query(ContextDBModel).count() == 4
+        assert len(signal.context) == 4
+
+        assert self.storage.session.query(DecisionDBModel).count() == 1
+        assert len(signal.decisions) == 1
+
+        assert isinstance(signal.source, SourceModel)
+        assert self.storage.session.query(SourceDBModel).count() == 1
+
+    def test_update_signal(self):
+        assert self.storage.get_all_signals() == []
+
+        to_insert = mock_signals()[0]
+        self.storage.update_or_create_signal(to_insert)
+        signals = self.storage.get_all_signals()
+
+        assert len(signals) == 1
+        signal = signals[0]
+
+        assert signal.sent == False
+
+        signal.sent = True
+
+        self.storage.update_or_create_signal(signal)
+        signals = self.storage.get_all_signals()
+
+        assert len(signals) == 1
+        signal = signals[0]
+
+        assert signal.sent == True
